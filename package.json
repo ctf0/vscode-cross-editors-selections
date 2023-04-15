@@ -1,0 +1,36 @@
+{
+    "name": "cross-editors-selections",
+    "displayName": "Cross Editors Selections",
+    "description": "mirror selection across visible editors",
+    "version": "0.0.1",
+    "publisher": "ctf0",
+    "author": "ctf0",
+    "repository": "https://github.com/ctf0/vscode-cross-editors-selections",
+    "engines": {
+        "vscode": "^1.68.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/main",
+    "scripts": {
+        "vscode:prepublish": "npm run esbuild-base -- --pure:console.log --minify",
+        "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+        "esbuild": "npm run esbuild-base -- --sourcemap",
+        "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+        "watch": "npm run esbuild"
+    },
+    "devDependencies": {
+        "@types/node": "^18.15.11",
+        "@types/vscode": "^1.68.0",
+        "esbuild": "^0.17.16",
+        "typescript": "^5.0.4"
+    },
+    "dependencies": {
+        "escape-string-regexp": "^5.0.0",
+        "lodash.debounce": "^4.0.8"
+    }
+}
