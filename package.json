@@ -2,7 +2,7 @@
     "name": "cross-editors-selections",
     "displayName": "Cross Editors Selections",
     "description": "mirror selection across visible editors",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "ctf0",
     "author": "ctf0",
     "repository": "https://github.com/ctf0/vscode-cross-editors-selections",
@@ -16,6 +16,55 @@
         "onStartupFinished"
     ],
     "main": "./out/main",
+    "contributes": {
+        "commands": [
+            {
+                "command": "ces.toggle",
+                "title": "Enable/Disable Extension",
+                "category": "Cross Editors Selections"
+            },
+            {
+                "command": "ces.toggleForCurrentFile",
+                "title": "Enable/Disable For Current File",
+                "category": "Cross Editors Selections",
+                "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "ces.toggle"
+                },
+                {
+                    "command": "ces.toggleForCurrentFile"
+                }
+            ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "Cross Editors Selections",
+            "properties": {
+                "crossEditorsSelections.disable": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "disable the extension"
+                },
+                "crossEditorsSelections.configScope": {
+                    "type": "boolean",
+                    "default": false,
+                    "enum": [
+                        true,
+                        false
+                    ],
+                    "markdownEnumDescriptions": [
+                        "Global",
+                        "Workspace"
+                    ],
+                    "markdownDescription": "disable the extension globally or by workspace, related to `#crossEditorsSelections.disable#`"
+                }
+            }
+        }
+    },
     "scripts": {
         "vscode:prepublish": "npm run esbuild-base -- --pure:console.log --minify",
         "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
