@@ -13,3 +13,7 @@
 
 - add a bunch of new configs
 - now we have an icon at the editor/title area to quickly disable/enable the current file selection mirroring
+
+## 0.0.4
+
+- correctly hide the editor/title icons
