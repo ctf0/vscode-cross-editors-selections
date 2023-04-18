@@ -2,7 +2,7 @@
     "name": "cross-editors-selections",
     "displayName": "Cross Editors Selections",
     "description": "mirror selection across visible editors",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "ctf0",
     "author": "ctf0",
     "repository": "https://github.com/ctf0/vscode-cross-editors-selections",
@@ -20,13 +20,18 @@
         "commands": [
             {
                 "command": "ces.toggle",
-                "title": "Enable/Disable Extension",
-                "category": "Cross Editors Selections"
+                "title": "Cross Editors Selections: Enable/Disable Extension"
             },
             {
-                "command": "ces.toggleForCurrentFile",
-                "title": "Enable/Disable For Current File",
-                "category": "Cross Editors Selections",
+                "command": "ces.stopForCurrentFile",
+                "title": "Cross Editors Selections: Disable For Current File",
+                "icon": "$(circle-slash)",
+                "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
+            },
+            {
+                "command": "ces.startForCurrentFile",
+                "title": "Cross Editors Selections: Enable For Current File",
+                "icon": "$(mirror)",
                 "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
             }
         ],
@@ -36,7 +41,22 @@
                     "command": "ces.toggle"
                 },
                 {
-                    "command": "ces.toggleForCurrentFile"
+                    "command": "ces.startForCurrentFile"
+                },
+                {
+                    "command": "ces.stopForCurrentFile"
+                }
+            ],
+            "editor/title": [
+                {
+                    "command": "ces.stopForCurrentFile",
+                    "group": "navigation",
+                    "when": "!cesIconStart && cesIconShow"
+                },
+                {
+                    "command": "ces.startForCurrentFile",
+                    "group": "navigation",
+                    "when": "cesIconStart && cesIconShow"
                 }
             ]
         },
@@ -61,6 +81,16 @@
                         "Workspace"
                     ],
                     "markdownDescription": "disable the extension globally or by workspace, related to `#crossEditorsSelections.disable#`"
+                },
+                "crossEditorsSelections.enableFileSelectionSwitchIcons": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "show/hide the editor/title icons to toggle selection mirroring"
+                },
+                "crossEditorsSelections.selectFirstOccurrenceOnly": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "when making a selection in other editors, select first found match of each selection instead of all of them"
                 }
             }
         }

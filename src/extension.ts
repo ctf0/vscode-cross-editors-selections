@@ -11,6 +11,7 @@ const excludedDocs: {
 export async function activate(context: vscode.ExtensionContext) {
     util.readConfig();
     await setContext(getDisabledState(), 'cesEnabled');
+    await setContext(getIconState(), 'cesIconShow');
 
     context.subscriptions.push(
         // config
@@ -18,24 +19,27 @@ export async function activate(context: vscode.ExtensionContext) {
             if (e.affectsConfiguration(util.PACKAGE_NAME)) {
                 util.readConfig();
                 await setContext(getDisabledState(), 'cesEnabled');
+                await setContext(getIconState(), 'cesIconShow');
             }
         }),
+
         // command
         vscode.commands.registerCommand('ces.toggle', async () => await util.config.update('disable', !util.config.disable, util.config.configScope)),
-        vscode.commands.registerCommand('ces.toggleForCurrentFile', () => {
-            const editor = vscode.window.activeTextEditor;
+        vscode.commands.registerCommand('ces.startForCurrentFile', async () => await toggleForCurrentFile()),
+        vscode.commands.registerCommand('ces.stopForCurrentFile', async () => await toggleForCurrentFile()),
 
-            if (editor) {
-                const item = getItem(editor);
+        // event
+        vscode.window.onDidChangeActiveTextEditor(async (e) => {
+            if (e) {
+                const item = getItem(e);
 
                 if (docIsExcluded(item)) {
-                    return removeExcludedDoc(item);
+                    await setContext(true, 'cesIconStart');
+                } else {
+                    await setContext(false, 'cesIconStart');
                 }
-
-                excludedDocs.push(item);
             }
         }),
-        // event
         vscode.window.onDidChangeTextEditorSelection(debounce((e: vscode.TextEditorSelectionChangeEvent) => {
             if (util.config.disable) {
                 return;
@@ -65,19 +69,31 @@ export async function activate(context: vscode.ExtensionContext) {
                         .join('|');
 
                     const regex = new RegExp(`${toFind}`, 'g');
+                    const selectFirstOccurrenceOnly = util.config.selectFirstOccurrenceOnly;
 
                     // make selection
                     otherEditors.map((editor: vscode.TextEditor) => {
                         const { document } = editor;
                         const txt = document.getText();
                         const selections: vscode.Selection[] = [];
+                        const matched: string[] = [];
 
                         for (const match of txt.matchAll(regex)) {
+                            const matchTxt = match[0];
+
+                            if (selectFirstOccurrenceOnly) {
+                                if (matched.some((item) => item == matchTxt)) {
+                                    continue;
+                                }
+
+                                matched.push(matchTxt);
+                            }
+
                             const range = new vscode.Range(
                                 // @ts-ignore
                                 document.positionAt(match.index),
                                 // @ts-ignore
-                                document.positionAt(match.index + match[0].length),
+                                document.positionAt(match.index + matchTxt.length),
                             );
 
                             selections.push(new vscode.Selection(range.start, range.end));
@@ -123,4 +139,26 @@ function getItem(editor) {
     };
 }
 
+async function toggleForCurrentFile() {
+    const editor = vscode.window.activeTextEditor;
+
+    if (editor) {
+        const item = getItem(editor);
+
+        if (docIsExcluded(item)) {
+            removeExcludedDoc(item);
+
+            return util.showMessage(`"${item.name}" mirror selection enabled`);
+        }
+
+        excludedDocs.push(item);
+
+        return util.showMessage(`"${item.name}" mirror selection disabled`);
+    }
+}
+
 export function deactivate() { }
+
+function getIconState(): boolean {
+    return util.config.enableFileSelectionSwitchIcons;
+}
