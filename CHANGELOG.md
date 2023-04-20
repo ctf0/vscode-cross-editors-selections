@@ -17,3 +17,9 @@
 ## 0.0.4
 
 - correctly hide the editor/title icons
+
+## 0.0.5
+
+- add new config `selectionMinimumCharLength` & `startDisabled`
+- show file basename in the alert msg instead of the full path
+- change the editor/title icons

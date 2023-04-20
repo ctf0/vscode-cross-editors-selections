@@ -2,7 +2,7 @@
     "name": "cross-editors-selections",
     "displayName": "Cross Editors Selections",
     "description": "mirror selection across visible editors",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "ctf0",
     "author": "ctf0",
     "repository": "https://github.com/ctf0/vscode-cross-editors-selections",
@@ -25,13 +25,13 @@
             {
                 "command": "ces.stopForCurrentFile",
                 "title": "Cross Editors Selections: Disable For Current File",
-                "icon": "$(circle-slash)",
+                "icon": "$(debug-stop)",
                 "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
             },
             {
                 "command": "ces.startForCurrentFile",
                 "title": "Cross Editors Selections: Enable For Current File",
-                "icon": "$(mirror)",
+                "icon": "$(debug-start)",
                 "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
             }
         ],
@@ -67,7 +67,7 @@
                 "crossEditorsSelections.disable": {
                     "type": "boolean",
                     "default": false,
-                    "description": "disable the extension"
+                    "markdownDescription": "disable the extension, also check `#crossEditorsSelections.configScope#`"
                 },
                 "crossEditorsSelections.configScope": {
                     "type": "boolean",
@@ -80,17 +80,28 @@
                         "Global",
                         "Workspace"
                     ],
-                    "markdownDescription": "disable the extension globally or by workspace, related to `#crossEditorsSelections.disable#`"
+                    "description": "disable the extension globally or by workspace"
                 },
                 "crossEditorsSelections.enableFileSelectionSwitchIcons": {
                     "type": "boolean",
                     "default": true,
-                    "markdownDescription": "show/hide the editor/title icons to toggle selection mirroring"
+                    "markdownDescription": "show/hide the editor/title icons for toggling selection mirroring"
                 },
                 "crossEditorsSelections.selectFirstOccurrenceOnly": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "when making a selection in other editors, select first found match of each selection instead of all of them"
+                },
+                "crossEditorsSelections.selectionMinimumCharLength": {
+                    "type": "number",
+                    "default": 5,
+                    "minimum": 3,
+                    "description": "minimum selection character count before starting to mirror it in other editors"
+                },
+                "crossEditorsSelections.startDisabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "disable the selection mirroring by default & instead enable it manually for each editor when needed"
                 }
             }
         }
