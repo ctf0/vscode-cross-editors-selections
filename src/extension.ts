@@ -39,10 +39,20 @@ export async function activate(context: vscode.ExtensionContext) {
                 const { fileName } = e;
                 const name = util.getFileName(fileName);
 
-                removeExcludedDoc(excludedDocs.find(({ name }) => name == fileName));
-                removeAllowedDoc(allowedDocs.find(({ name }) => name == fileName));
+                const exItem = excludedDocs.find(({ name }) => name == fileName);
+                const inItem = allowedDocs.find(({ name }) => name == fileName);
 
-                return util.showMessage(`"${name}" selection mirror reset`);
+                if (exItem) {
+                    removeExcludedDoc(exItem);
+                }
+
+                if (inItem) {
+                    removeAllowedDoc(inItem);
+                }
+
+                if (exItem || inItem) {
+                    return util.showMessage(`"${name}" selection mirror reset`);
+                }
             }
         }),
         vscode.window.onDidChangeActiveTextEditor(async (e) => {
