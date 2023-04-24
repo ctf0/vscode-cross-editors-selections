@@ -2,7 +2,7 @@
     "name": "cross-editors-selections",
     "displayName": "Cross Editors Selections",
     "description": "mirror selection across visible editors",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "ctf0",
     "author": "ctf0",
     "repository": "https://github.com/ctf0/vscode-cross-editors-selections",
@@ -26,13 +26,13 @@
                 "command": "ces.stopForCurrentFile",
                 "title": "Cross Editors Selections: Disable For Current File",
                 "icon": "$(debug-stop)",
-                "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
+                "when": "editorFocus && !config.crossEditorsSelections.disable && multipleEditorGroups"
             },
             {
                 "command": "ces.startForCurrentFile",
                 "title": "Cross Editors Selections: Enable For Current File",
                 "icon": "$(debug-start)",
-                "enablement": "editorFocus && cesEnabled && multipleEditorGroups"
+                "when": "editorFocus && !config.crossEditorsSelections.disable && multipleEditorGroups"
             }
         ],
         "menus": {
@@ -51,12 +51,12 @@
                 {
                     "command": "ces.stopForCurrentFile",
                     "group": "navigation",
-                    "when": "!cesIconStart && cesIconShow && editorFocus && multipleEditorGroups"
+                    "when": "!cesIconStart && cesIconShow && editorFocus && !config.crossEditorsSelections.disable && multipleEditorGroups"
                 },
                 {
                     "command": "ces.startForCurrentFile",
                     "group": "navigation",
-                    "when": "cesIconStart && cesIconShow && editorFocus && multipleEditorGroups"
+                    "when": "cesIconStart && cesIconShow && editorFocus && !config.crossEditorsSelections.disable && multipleEditorGroups"
                 }
             ]
         },

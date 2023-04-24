@@ -15,7 +15,6 @@ const allowedDocs: {
 
 export async function activate(context: vscode.ExtensionContext) {
     util.readConfig();
-    await setContext(getDisabledState(), 'cesEnabled');
     await setContext(getIconState(), 'cesIconShow');
 
     context.subscriptions.push(
@@ -23,7 +22,6 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.workspace.onDidChangeConfiguration(async (e) => {
             if (e.affectsConfiguration(util.PACKAGE_NAME)) {
                 util.readConfig();
-                await setContext(getDisabledState(), 'cesEnabled');
                 await setContext(getIconState(), 'cesIconShow');
             }
         }),
@@ -166,16 +164,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 function setContext(val, key) {
     return vscode.commands.executeCommand('setContext', key, val);
-}
-
-function getDisabledState() {
-    let val = true;
-
-    if (util.config.disable) {
-        val = false;
-    }
-
-    return val;
 }
 
 function docIsExcluded(item): boolean {
