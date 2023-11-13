@@ -2,7 +2,7 @@
     "name": "cross-editors-selections",
     "displayName": "Cross Editors Selections",
     "description": "mirror selection across visible editors",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "publisher": "ctf0",
     "author": "ctf0",
     "repository": "https://github.com/ctf0/vscode-cross-editors-selections",

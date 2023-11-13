@@ -1,5 +1,9 @@
 # Cross Editors Selections
 
+> ### vscode now support this natively by using `"editor.occurrencesHighlight": "multiFile"`
+
+<br>
+
 based on the 2017 [issue](https://github.com/microsoft/vscode/issues/30014).
 
 > Its different from other extensions as it doesn't have any configuration or coloring options to edit,
